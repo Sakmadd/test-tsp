@@ -54,88 +54,91 @@ export function TableOrder() {
 
   return (
     <>
-      <Container>
-        <Flex justifyContent={'center'} w={'full'} pt={'20px'} px={'20px'}>
-          <Flex alignItems={'center'} gap={'20px'} w={'200px'}>
-            <Input
-              placeholder="Select Date"
-              size="md"
-              type="date"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-            />
-          </Flex>
+      <Flex flexDir={'column'} gap={'2rem'}>
+        <Container>
+          <Flex justifyContent={'center'} w={'full'} px={'20px'}>
+            <Flex alignItems={'center'} gap={'20px'} w={'200px'}>
+              <Input
+                placeholder="Select Date"
+                size="md"
+                type="date"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+              />
+            </Flex>
 
-          <Flex alignItems={'center'} gap={'20px'} w={'200px'}>
-            <Select
-              placeholder="By Status"
-              value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value)}
+            <Flex alignItems={'center'} gap={'20px'} w={'250px'}>
+              <Select
+                placeholder="By Status"
+                value={selectedStatus}
+                onChange={(e) => setSelectedStatus(e.target.value)}
+              >
+                <option value="pending">PENDING</option>
+                <option value="progress">PROGRESS</option>
+                <option value="completed">COMPLETED</option>
+                <option value="canceled">CANCELED</option>
+              </Select>
+            </Flex>
+
+            <Divider opacity={0}></Divider>
+
+            <Button
+              p={'25px'}
+              colorScheme="teal"
+              variant="solid"
+              onClick={() => navigate('/order/create')}
             >
-              <option value="pending">PENDING</option>
-              <option value="progress">PROGRESS</option>
-              <option value="completed">COMPLETED</option>
-              <option value="canceled">CANCELED</option>
-            </Select>
+              Add Order
+            </Button>
           </Flex>
+        </Container>
 
-          <Divider opacity={0}></Divider>
-
-          <Button
-            colorScheme="teal"
-            variant="solid"
-            onClick={() => navigate('/order/create')}
-          >
-            Add Order
-          </Button>
-        </Flex>
-      </Container>
-
-      <Container>
-        <TableContainer>
-          <Table variant="simple">
-            <TableCaption>Order List</TableCaption>
-            <Thead>
-              <Tr>
-                <Th>Product</Th>
-                <Th>Quantity</Th>
-                <Th>Deadline</Th>
-                <Th>Operator</Th>
-                <Th>Status</Th>
-                <Th>Action</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {filteredOrders.length > 0 ? (
-                filteredOrders.map((order) => (
-                  <Tr key={order.id}>
-                    <Td>{order.product_name}</Td>
-                    <Td>{order.quantity}</Td>
-                    <Td>{formatDateFromString(order.deadline)}</Td>
-                    <Td>{order.operator.username}</Td>
-                    <Td>{order.history![0].status}</Td>
-                    <Td>
-                      <Button
-                        variant={'ghost'}
-                        m={0}
-                        onClick={() => navigate('/order/edit/' + order.id)}
-                      >
-                        <FaEdit />
-                      </Button>
+        <Container>
+          <TableContainer>
+            <Table variant="simple">
+              <TableCaption>Order List</TableCaption>
+              <Thead>
+                <Tr>
+                  <Th>Product</Th>
+                  <Th>Quantity</Th>
+                  <Th>Deadline</Th>
+                  <Th>Operator</Th>
+                  <Th>Status</Th>
+                  <Th>Action</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {filteredOrders.length > 0 ? (
+                  filteredOrders.map((order) => (
+                    <Tr key={order.id}>
+                      <Td>{order.product_name}</Td>
+                      <Td>{order.quantity}</Td>
+                      <Td>{formatDateFromString(order.deadline)}</Td>
+                      <Td>{order.operator.username}</Td>
+                      <Td>{order.history![0].status}</Td>
+                      <Td>
+                        <Button
+                          variant={'ghost'}
+                          m={0}
+                          onClick={() => navigate('/order/edit/' + order.id)}
+                        >
+                          <FaEdit />
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))
+                ) : (
+                  <Tr>
+                    <Td colSpan={6} textAlign="center">
+                      No orders found.
                     </Td>
                   </Tr>
-                ))
-              ) : (
-                <Tr>
-                  <Td colSpan={6} textAlign="center">
-                    No orders found.
-                  </Td>
-                </Tr>
-              )}
-            </Tbody>
-          </Table>
-        </TableContainer>
-      </Container>
+                )}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </Container>
+      </Flex>
     </>
   );
 }

@@ -17,6 +17,7 @@ import { CreateOrderPage } from './pages/createOrderPage';
 import { EditOrderPage } from './pages/editOrderPage';
 import { CreateHistoryPage } from './pages/createHistoryPage';
 import { TrackPage } from './pages/trackPage';
+import { ReportPage } from './pages/reportPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -56,6 +57,7 @@ function App() {
             <Route path="/order/edit/:id" element={<EditOrderPage />} />
             <Route path="/order/history/:id" element={<CreateHistoryPage />} />
             <Route path="/track" element={<TrackPage />} />
+            <Route path="/report" element={<ReportPage />} />
             <Route path="*" element={<div>404 - Page Not Found</div>} />
           </Route>
         )}

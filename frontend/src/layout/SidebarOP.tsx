@@ -22,12 +22,12 @@ import {
 } from '@chakra-ui/react';
 import { IconType } from 'react-icons';
 import { BiTask } from 'react-icons/bi';
-import { FiBell, FiChevronDown, FiMenu, FiTrendingUp } from 'react-icons/fi';
+import { FiBell, FiChevronDown, FiMenu } from 'react-icons/fi';
 import { PiPathFill } from 'react-icons/pi';
+import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import api from '../network/api';
 import { unsetLoggedUser } from '../redux/slices/authSlice';
-import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 
 interface LinkItemProps {
@@ -53,7 +53,6 @@ interface SidebarProps extends BoxProps {
 const LinkItems: Array<LinkItemProps> = [
   { name: 'Task', icon: BiTask, path: '/task' },
   { name: 'Track', icon: PiPathFill, path: 'track' },
-  { name: 'Report', icon: FiTrendingUp, path: 'report' },
 ];
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
@@ -74,11 +73,13 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         </Text>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
-      {LinkItems.map((link) => (
-        <NavItem path={link.path} key={link.name} icon={link.icon}>
-          {link.name}
-        </NavItem>
-      ))}
+      <Flex flexDir={'column'} gap={'1rem'}>
+        {LinkItems.map((link) => (
+          <NavItem path={link.path} key={link.name} icon={link.icon}>
+            {link.name}
+          </NavItem>
+        ))}
+      </Flex>
     </Box>
   );
 };
