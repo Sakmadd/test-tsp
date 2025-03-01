@@ -41,6 +41,8 @@ class AuthServices {
   }
 
   async login(LoginDto: LoginDto): Promise<string> {
+    console.log(LoginDto);
+
     const requestedUser: UserType | null = await prisma.user.findUnique({
       where: {
         email: LoginDto.email,
@@ -65,6 +67,11 @@ class AuthServices {
     const token = jwt.sign(requestedUser, CONFIG.SECRET_SAUCE!);
 
     return token;
+  }
+
+  async getLoggedUser(token: string): Promise<UserType> {
+    const user = jwt.verify(token, CONFIG.SECRET_SAUCE!);
+    return user as UserType;
   }
 }
 

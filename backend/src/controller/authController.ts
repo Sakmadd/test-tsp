@@ -55,7 +55,33 @@ export class AuthController {
         })
       );
     } catch (error: any) {
-      res.status(error.code).json(
+      res.status(400).json(
+        new ResponseDTO<null>({
+          message: errorParser(error),
+          data: null,
+          error: true,
+        })
+      );
+    }
+  }
+
+  async getLoggedUser(req: Request, res: Response) {
+    try {
+      const token: string = req.headers.authorization!;
+
+      const payload: UserType = await authService.getLoggedUser(token);
+
+      delete payload!.password;
+
+      res.status(200).json(
+        new ResponseDTO<UserType>({
+          message: 'User fetched successfully',
+          data: payload,
+          error: false,
+        })
+      );
+    } catch (error: any) {
+      res.status(400).json(
         new ResponseDTO<null>({
           message: errorParser(error),
           data: null,
