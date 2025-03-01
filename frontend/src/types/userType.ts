@@ -1,4 +1,4 @@
-import { Role } from '@prisma/client';
+import { Role } from './roleEnum';
 
 export type UserType = {
   id: string;

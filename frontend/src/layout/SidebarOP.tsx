@@ -24,7 +24,7 @@ import { IconType } from 'react-icons';
 import { BiTask } from 'react-icons/bi';
 import { FiBell, FiChevronDown, FiMenu, FiTrendingUp } from 'react-icons/fi';
 import { PiPathFill } from 'react-icons/pi';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import api from '../network/api';
 import { unsetLoggedUser } from '../redux/slices/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -33,11 +33,13 @@ import { RootState } from '../redux/store';
 interface LinkItemProps {
   name: string;
   icon: IconType;
+  path: string;
 }
 
 interface NavItemProps extends FlexProps {
   icon: IconType;
   children: React.ReactNode;
+  path: string;
 }
 
 interface MobileProps extends FlexProps {
@@ -49,9 +51,9 @@ interface SidebarProps extends BoxProps {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Task', icon: BiTask },
-  { name: 'Track', icon: PiPathFill },
-  { name: 'Report', icon: FiTrendingUp },
+  { name: 'Task', icon: BiTask, path: '/task' },
+  { name: 'Track', icon: PiPathFill, path: 'track' },
+  { name: 'Report', icon: FiTrendingUp, path: 'report' },
 ];
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
@@ -73,7 +75,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
+        <NavItem path={link.path} key={link.name} icon={link.icon}>
           {link.name}
         </NavItem>
       ))}
@@ -81,11 +83,12 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   );
 };
 
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, children, path, ...rest }: NavItemProps) => {
+  const location = useLocation();
+  const navigate = useNavigate();
   return (
     <Box
-      as="a"
-      href="#"
+      onClick={() => navigate(path)}
       style={{ textDecoration: 'none' }}
       _focus={{ boxShadow: 'none' }}
     >
@@ -100,6 +103,8 @@ const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
           bg: 'cyan.400',
           color: 'white',
         }}
+        bg={location.pathname == path ? 'cyan.400' : undefined}
+        color={location.pathname == path ? 'white' : undefined}
         {...rest}
       >
         {icon && (
@@ -181,7 +186,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                 >
                   <Text fontSize="sm">{loggedUser?.username}</Text>
                   <Text fontSize="xs" color="gray.600">
-                    OP
+                    Operators
                   </Text>
                 </VStack>
                 <Box display={{ base: 'none', md: 'flex' }}>

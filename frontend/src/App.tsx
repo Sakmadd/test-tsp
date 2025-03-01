@@ -11,6 +11,10 @@ import { setPreloaded } from './redux/slices/preLoadedSlice';
 import { RootState } from './redux/store';
 import { UserType } from './types/userType';
 import GreetPage from './pages/greetPage';
+import { ProductPage } from './pages/productPage';
+import { TaskPage } from './pages/taskPage';
+import { CreateOrderPage } from './pages/createOrderPage';
+import { EditOrderPage } from './pages/editOrderPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -44,14 +48,18 @@ function App() {
       <Routes>
         {loggedUser?.role === 'PM' && (
           <Route path="/" element={<SidebarPM />}>
-            <Route index element={<h1>test</h1>} />
+            <Route index element={<GreetPage />} />
+            <Route path="/order" element={<ProductPage />} />
+            <Route path="/order/create" element={<CreateOrderPage />} />
+            <Route path="/order/edit/:orderId" element={<EditOrderPage />} />
             <Route path="*" element={<div>404 - Page Not Found</div>} />
           </Route>
         )}
 
         {loggedUser?.role === 'OP' && (
           <Route path="/" element={<SidebarOP />}>
-            <Route index element={<h1>test</h1>} />
+            <Route index element={<GreetPage />} />
+            <Route path="/task" element={<TaskPage />} />
             <Route path="*" element={<div>404 - Page Not Found</div>} />
           </Route>
         )}
