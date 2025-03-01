@@ -11,48 +11,20 @@ import {
   RadioGroup,
   Stack,
   Textarea,
-  useToast,
 } from '@chakra-ui/react';
-import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import api from '../network/api';
-import { RootState } from '../redux/store';
-import { HistoryForm, Status } from '../types/formType';
-import { useState } from 'react';
+import { useHistory } from '../hooks/useHistory';
+import { Status } from '../types/formType';
 
 export function CreateHistoryPage() {
-  const loggedUser = useSelector((state: RootState) => state.loggedUser.value);
-  const { id } = useParams();
-  const toast = useToast();
-  const navigate = useNavigate();
-  const [quantiy, setQuantity] = useState<number>();
-  const { register, handleSubmit, setValue, watch } = useForm<HistoryForm>({
-    defaultValues: {
-      orderId: id || '',
-      description: '',
-      status: 'PENDING',
-    },
-  });
-
-  const onSubmit = (data: HistoryForm) => {
-    if (quantiy) {
-      console.log(quantiy);
-      api.CHANGE_QUANTITY(id!, quantiy);
-    }
-
-    api.ADD_HISTORY(data).then(() => {
-      navigate('/order/edit/' + id);
-    });
-
-    toast({
-      title: 'Success',
-      description: 'History entry has been added successfully!',
-      status: 'success',
-      duration: 3000,
-      isClosable: true,
-    });
-  };
+  const {
+    handleSubmit,
+    loggedUser,
+    onSubmit,
+    register,
+    setQuantity,
+    setValue,
+    watch,
+  } = useHistory();
 
   return (
     <Box

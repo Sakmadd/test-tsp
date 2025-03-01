@@ -39,7 +39,6 @@ class API {
       throw error;
     }
   }
-
   async REGISTER(data: RegisterDataType): Promise<AxiosResponse> {
     console.log(data);
 
@@ -125,7 +124,6 @@ class API {
       throw error;
     }
   }
-
   async GET_TASKS(): Promise<OrderType[]> {
     try {
       const response = await apiClient.get('/orders/task', {
@@ -141,7 +139,6 @@ class API {
       throw error;
     }
   }
-
   async GET_ORDER(id: string): Promise<OrderType> {
     try {
       const response = await apiClient.get('/orders/' + id, {
@@ -158,7 +155,6 @@ class API {
       throw error;
     }
   }
-
   async EDIT_ORDER(data: OrderEdit) {
     try {
       const response = await apiClient.put('/orders', data, {
@@ -174,7 +170,6 @@ class API {
       throw error;
     }
   }
-
   async ADD_HISTORY(data: HistoryForm) {
     try {
       const response = await apiClient.post('/orders/history', data, {
@@ -191,7 +186,6 @@ class API {
       throw error;
     }
   }
-
   async GET_HISTORIES(id: string): Promise<HistoryType[]> {
     try {
       const response = await apiClient.get(`/orders/${id}/history`, {
@@ -207,7 +201,6 @@ class API {
       throw error;
     }
   }
-
   async CHANGE_QUANTITY(orderId: string, quantity: number): Promise<void> {
     try {
       await apiClient.put(
