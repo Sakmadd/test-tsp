@@ -11,7 +11,6 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Link,
   Radio,
   RadioGroup,
   Stack,
@@ -22,9 +21,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import api from '../network/api';
-import { useNavigate } from 'react-router-dom';
 
 // Schema validation with Zod
 const registerSchema = z.object({
@@ -148,9 +147,13 @@ export default function RegisterPage() {
               <Stack pt={6}>
                 <Text align={'center'}>
                   Already a user?{' '}
-                  <Link color={'blue.400'} href="/login">
+                  <Text
+                    cursor={'pointer'}
+                    color={'blue.400'}
+                    onClick={() => navigate('/login')}
+                  >
                     Login
-                  </Link>
+                  </Text>
                 </Text>
               </Stack>
             </Stack>

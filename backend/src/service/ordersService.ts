@@ -8,6 +8,7 @@ import { HistoryCreateDto } from '../dto/request/HistoryCreateRequest';
 import { OrderSchema } from '../validators/orderSchema';
 import { formatZodErrors } from '../utils/formatZodErrors';
 import { HistorySchema } from '../validators/historySchema';
+import { OperatorReportType, OrderReportType } from '../types/orderReportType';
 
 const prisma = new PrismaClient();
 
@@ -117,10 +118,41 @@ class OrdersService {
         },
       },
       include: {
-        history: true,
+        history: {
+          orderBy: {
+            timestamp: 'desc',
+          },
+        },
       },
     });
+
     return orders;
+  }
+
+  async getOrder(orderId: string): Promise<OrderType> {
+    const order = await prisma.order.findUnique({
+      where: {
+        id: orderId,
+      },
+      include: {
+        history: {
+          orderBy: {
+            timestamp: 'desc',
+          },
+        },
+        operator: {
+          omit: {
+            password: true,
+          },
+        },
+      },
+    });
+
+    if (!order) {
+      throw new BadRequestException(`Not found frder with id ${orderId}`);
+    }
+
+    return order;
   }
 
   async getTaskPM(): Promise<OrderType[]> {
@@ -157,6 +189,18 @@ class OrdersService {
         description: request.description,
         order_id: request.orderId,
         timestamp: today.toISOString(),
+      },
+    });
+    return history;
+  }
+
+  async getHistories(id: string): Promise<HistoryType[]> {
+    const history = await prisma.history.findMany({
+      where: {
+        order_id: id,
+      },
+      orderBy: {
+        timestamp: 'desc',
       },
     });
     return history;

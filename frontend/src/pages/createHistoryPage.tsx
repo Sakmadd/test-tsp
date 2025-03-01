@@ -1,51 +1,40 @@
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
 import {
   Box,
   Button,
+  Flex,
   FormControl,
   FormLabel,
-  Input,
-  Stack,
   Heading,
+  Radio,
+  RadioGroup,
+  Stack,
   Textarea,
   useToast,
 } from '@chakra-ui/react';
-import { HistoryType } from '../types/historyType';
+import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import api from '../network/api';
+import { RootState } from '../redux/store';
+import { HistoryForm, Status } from '../types/formType';
 
 export function CreateHistoryPage() {
-  const { orderId } = useParams();
+  const loggedUser = useSelector((state: RootState) => state.loggedUser.value);
+  const { id } = useParams();
   const toast = useToast();
-
-  const [history, setHistory] = useState<HistoryType>({
-    id: '',
-    order_id: orderId || '',
-    description: '',
-    timestamp: new Date(),
-    status: '',
+  const navigate = useNavigate();
+  const { register, handleSubmit, setValue, watch } = useForm<HistoryForm>({
+    defaultValues: {
+      orderId: id || '',
+      description: '',
+      status: 'PENDING',
+    },
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setHistory({ ...history, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!history.description) {
-      toast({
-        title: 'Error',
-        description: 'Description cannot be empty.',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      });
-      return;
-    }
-
-    console.log('History Submitted:', history);
+  const onSubmit = (data: HistoryForm) => {
+    api.ADD_HISTORY(data).then(() => {
+      navigate('/order/edit/' + id);
+    });
 
     toast({
       title: 'Success',
@@ -54,20 +43,11 @@ export function CreateHistoryPage() {
       duration: 3000,
       isClosable: true,
     });
-
-    // Reset form
-    setHistory({
-      id: '',
-      order_id: orderId || '',
-      description: '',
-      timestamp: new Date(),
-      status: '',
-    });
   };
 
   return (
     <Box
-      maxW="md"
+      maxW="xl"
       mx="auto"
       mt={10}
       p={6}
@@ -78,24 +58,36 @@ export function CreateHistoryPage() {
       <Heading size="lg" textAlign="center" mb={6}>
         Add History
       </Heading>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={4}>
-          <FormControl isRequired>
-            <FormLabel>Order ID</FormLabel>
-            <Input
-              type="text"
-              name="order_id"
-              value={history.order_id}
-              isReadOnly
-            />
-          </FormControl>
+          <Flex justifyContent={'center'}>
+            <RadioGroup
+              value={watch('status')}
+              onChange={(value) => setValue('status', value as Status)}
+            >
+              <Stack spacing={5} direction="row">
+                <Radio colorScheme="blue" value="PENDING">
+                  PENDING
+                </Radio>
+                <Radio colorScheme="yellow" value="PROGRESS">
+                  PROGRESS
+                </Radio>
+                <Radio colorScheme="green" value="COMPLETED">
+                  COMPLETED
+                </Radio>
+                {loggedUser!.role == 'PM' && (
+                  <Radio colorScheme="red" value="CANCELED">
+                    CANCELED
+                  </Radio>
+                )}
+              </Stack>
+            </RadioGroup>
+          </Flex>
 
           <FormControl isRequired>
             <FormLabel>Description</FormLabel>
             <Textarea
-              name="description"
-              value={history.description}
-              onChange={handleChange}
+              {...register('description', { required: true })}
               placeholder="Enter history details..."
             />
           </FormControl>

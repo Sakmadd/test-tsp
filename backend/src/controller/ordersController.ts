@@ -15,6 +15,8 @@ class OrdersController {
         return;
       }
 
+      req.body.quantity = Number(req.body.quantity);
+
       const payload: OrderType = await ordersService.create(req.body);
       res.status(201).json(
         new ResponseDTO<OrderType>({
@@ -119,6 +121,51 @@ class OrdersController {
         new ResponseDTO<HistoryType>({
           data: payload,
           message: 'History created successfully',
+          error: false,
+        })
+      );
+    } catch (error: any) {
+      res.status(error.code).json(
+        new ResponseDTO<null>({
+          data: null,
+          message: errorParser(error),
+          error: true,
+        })
+      );
+    }
+  }
+
+  async getOrder(req: Request, res: Response) {
+    try {
+      const payload = await ordersService.getOrder(req.params.id);
+
+      res.status(201).json(
+        new ResponseDTO<OrderType>({
+          data: payload,
+          message: 'History created successfully',
+          error: false,
+        })
+      );
+    } catch (error: any) {
+      res.status(error.code).json(
+        new ResponseDTO<null>({
+          data: null,
+          message: errorParser(error),
+          error: true,
+        })
+      );
+    }
+  }
+
+  async getHistories(req: Request, res: Response) {
+    try {
+      const payload: HistoryType[] = await ordersService.getHistories(
+        req.params.id
+      );
+      res.status(200).json(
+        new ResponseDTO<HistoryType[]>({
+          data: payload,
+          message: 'Histories fetched successfully',
           error: false,
         })
       );

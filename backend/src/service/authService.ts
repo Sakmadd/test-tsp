@@ -41,8 +41,6 @@ class AuthServices {
   }
 
   async login(LoginDto: LoginDto): Promise<string> {
-    console.log(LoginDto);
-
     const requestedUser: UserType | null = await prisma.user.findUnique({
       where: {
         email: LoginDto.email,

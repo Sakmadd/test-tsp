@@ -838,6 +838,8 @@ export default function GreetPage() {
   return (
     <Container maxW={'5xl'}>
       <Stack
+        h={'95vh'}
+        overflowY={'hidden'}
         textAlign={'center'}
         align={'center'}
         spacing={{ base: 8, md: 10 }}

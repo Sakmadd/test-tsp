@@ -19,3 +19,10 @@ export type ResetDataType = {
   confirmedPassword: string;
   general?: string;
 };
+export type Status = 'PENDING' | 'PROGRESS' | 'COMPLETED' | 'CANCELED';
+
+export type HistoryForm = {
+  orderId: string;
+  description: string;
+  status: Status;
+};

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -13,15 +13,20 @@ import {
   Select,
 } from '@chakra-ui/react';
 import { UserType } from '../types/userType';
-import { Role } from '../types/roleEnum';
-
-const operators: UserType[] = [
-  { id: 'op1', username: 'johndoe', email: 'test@gmail.com', role: Role.OP },
-  { id: 'op2', username: 'janesmith', email: 'test@gmail.com', role: Role.OP },
-  { id: 'op3', username: 'alice', email: 'test@gmail.com', role: Role.OP },
-];
+import api from '../network/api';
+import { useNavigate } from 'react-router-dom';
 
 export function CreateOrderPage() {
+  const navigate = useNavigate();
+  const [operators, setOperators] = useState<UserType[]>();
+  useEffect(() => {
+    async function init() {
+      const operators = await api.GET_OPERATORS();
+      setOperators(operators);
+    }
+    init();
+  });
+
   const [order, setOrder] = useState({
     productName: '',
     quantity: 1,
@@ -51,8 +56,7 @@ export function CreateOrderPage() {
       return;
     }
 
-    console.log('Order Submitted:', order);
-
+    api.CREATE_ORDER(order).then(() => navigate('/order'));
     toast({
       title: 'Success',
       description: 'Order has been created successfully!',
@@ -123,11 +127,13 @@ export function CreateOrderPage() {
               onChange={handleChange}
               placeholder="Select Operator"
             >
-              {operators.map((operator) => (
-                <option key={operator.id} value={operator.id}>
-                  {operator.username}
-                </option>
-              ))}
+              {operators
+                ? operators.map((operator) => (
+                    <option key={operator.id} value={operator.id}>
+                      {operator.username}
+                    </option>
+                  ))
+                : null}
             </Select>
           </FormControl>
 

@@ -15,6 +15,8 @@ import { ProductPage } from './pages/productPage';
 import { TaskPage } from './pages/taskPage';
 import { CreateOrderPage } from './pages/createOrderPage';
 import { EditOrderPage } from './pages/editOrderPage';
+import { CreateHistoryPage } from './pages/createHistoryPage';
+import { TrackPage } from './pages/trackPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -51,7 +53,9 @@ function App() {
             <Route index element={<GreetPage />} />
             <Route path="/order" element={<ProductPage />} />
             <Route path="/order/create" element={<CreateOrderPage />} />
-            <Route path="/order/edit/:orderId" element={<EditOrderPage />} />
+            <Route path="/order/edit/:id" element={<EditOrderPage />} />
+            <Route path="/order/history/:id" element={<CreateHistoryPage />} />
+            <Route path="/track" element={<TrackPage />} />
             <Route path="*" element={<div>404 - Page Not Found</div>} />
           </Route>
         )}
@@ -60,6 +64,8 @@ function App() {
           <Route path="/" element={<SidebarOP />}>
             <Route index element={<GreetPage />} />
             <Route path="/task" element={<TaskPage />} />
+            <Route path="/order/history/:id" element={<CreateHistoryPage />} />
+            <Route path="/track" element={<TrackPage />} />
             <Route path="*" element={<div>404 - Page Not Found</div>} />
           </Route>
         )}

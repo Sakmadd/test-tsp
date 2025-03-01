@@ -17,33 +17,70 @@ import { Container } from '../component/container';
 import { OrderType } from '../types/orderType';
 import { FaEdit } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import api from '../network/api';
+import { formatDateFromString } from '../utils/formatDate';
 
-interface Props {
-  orders: OrderType[];
-}
-
-export function TableOrder({ orders }: Props) {
+export function TableOrder() {
+  const [orders, setOrders] = useState<OrderType[]>([]);
+  const [filteredOrders, setFilteredOrders] = useState<OrderType[]>([]);
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    async function init() {
+      const fetchedOrders = await api.GET_ORDERS();
+      setOrders(fetchedOrders);
+      setFilteredOrders(fetchedOrders);
+    }
+    init();
+  }, []);
+
+  useEffect(() => {
+    let filtered = orders;
+    if (selectedDate) {
+      filtered = filtered.filter((order) =>
+        order.deadline.startsWith(selectedDate)
+      );
+    }
+    if (selectedStatus) {
+      filtered = filtered.filter(
+        (order) => order.history![0].status === selectedStatus.toUpperCase()
+      );
+    }
+    setFilteredOrders(filtered);
+  }, [selectedDate, selectedStatus, orders]);
+
   return (
     <>
       <Container>
         <Flex justifyContent={'center'} w={'full'} pt={'20px'} px={'20px'}>
           <Flex alignItems={'center'} gap={'20px'} w={'200px'}>
             <Input
-              placeholder="Select Date and Time"
+              placeholder="Select Date"
               size="md"
-              type="datetime-local"
+              type="date"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
             />
           </Flex>
+
           <Flex alignItems={'center'} gap={'20px'} w={'200px'}>
-            <Select placeholder="By Status">
+            <Select
+              placeholder="By Status"
+              value={selectedStatus}
+              onChange={(e) => setSelectedStatus(e.target.value)}
+            >
               <option value="pending">PENDING</option>
               <option value="progress">PROGRESS</option>
               <option value="completed">COMPLETED</option>
               <option value="canceled">CANCELED</option>
             </Select>
           </Flex>
+
           <Divider opacity={0}></Divider>
+
           <Button
             colorScheme="teal"
             variant="solid"
@@ -53,10 +90,11 @@ export function TableOrder({ orders }: Props) {
           </Button>
         </Flex>
       </Container>
+
       <Container>
         <TableContainer>
           <Table variant="simple">
-            <TableCaption>Imperial to metric conversion factors</TableCaption>
+            <TableCaption>Order List</TableCaption>
             <Thead>
               <Tr>
                 <Th>Product</Th>
@@ -68,24 +106,32 @@ export function TableOrder({ orders }: Props) {
               </Tr>
             </Thead>
             <Tbody>
-              {orders.map((order) => (
-                <Tr key={order.id}>
-                  <Td>{order.product_name}</Td>
-                  <Td>{order.quantity}</Td>
-                  <Td>{order.deadline.toDateString()}</Td>
-                  <Td>{order.operator_id}</Td>
-                  <Td>{order.history![0].status}</Td>
-                  <Td>
-                    <Button
-                      variant={'ghost'}
-                      m={0}
-                      onClick={() => navigate('/order/edit/' + order.id)}
-                    >
-                      <FaEdit />
-                    </Button>
+              {filteredOrders.length > 0 ? (
+                filteredOrders.map((order) => (
+                  <Tr key={order.id}>
+                    <Td>{order.product_name}</Td>
+                    <Td>{order.quantity}</Td>
+                    <Td>{formatDateFromString(order.deadline)}</Td>
+                    <Td>{order.operator.username}</Td>
+                    <Td>{order.history![0].status}</Td>
+                    <Td>
+                      <Button
+                        variant={'ghost'}
+                        m={0}
+                        onClick={() => navigate('/order/edit/' + order.id)}
+                      >
+                        <FaEdit />
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))
+              ) : (
+                <Tr>
+                  <Td colSpan={6} textAlign="center">
+                    No orders found.
                   </Td>
                 </Tr>
-              ))}
+              )}
             </Tbody>
           </Table>
         </TableContainer>

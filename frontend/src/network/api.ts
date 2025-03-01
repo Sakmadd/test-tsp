@@ -1,7 +1,15 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import { CONFIG } from '../config/config';
-import { LoginDataType, RegisterDataType } from '../types/formType';
+import {
+  HistoryForm,
+  LoginDataType,
+  RegisterDataType,
+} from '../types/formType';
 import { UserType } from '../types/userType';
+import { OrderType } from '../types/orderType';
+import { OrderCreateType } from '../types/orderCreateType';
+import { OrderEdit } from '../types/OrderEditType';
+import { HistoryType } from '../types/historyType';
 
 const apiClient: AxiosInstance = axios.create({
   baseURL: CONFIG.API_URL,
@@ -65,6 +73,133 @@ class API {
       this.SET_TOKEN(token);
 
       return token;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw error;
+      }
+      throw error;
+    }
+  }
+  async GET_OPERATORS(): Promise<UserType[]> {
+    try {
+      const response = await apiClient.get('/users/operators', {
+        headers: {
+          Authorization: `${this.GET_TOKEN()}`,
+        },
+      });
+      return response.data.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw error;
+      }
+      throw error;
+    }
+  }
+  async CREATE_ORDER(data: OrderCreateType): Promise<OrderType> {
+    try {
+      const response = await apiClient.post('/orders', data, {
+        headers: {
+          Authorization: `${this.GET_TOKEN()}`,
+        },
+      });
+      return response.data.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw error;
+      }
+      throw error;
+    }
+  }
+  async GET_ORDERS(): Promise<OrderType[]> {
+    try {
+      const response = await apiClient.get('/orders', {
+        headers: {
+          Authorization: `${this.GET_TOKEN()}`,
+        },
+      });
+      return response.data.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw error;
+      }
+      throw error;
+    }
+  }
+
+  async GET_TASKS(): Promise<OrderType[]> {
+    try {
+      const response = await apiClient.get('/orders/task', {
+        headers: {
+          Authorization: `${this.GET_TOKEN()}`,
+        },
+      });
+      return response.data.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw error;
+      }
+      throw error;
+    }
+  }
+
+  async GET_ORDER(id: string): Promise<OrderType> {
+    try {
+      const response = await apiClient.get('/orders/' + id, {
+        headers: {
+          Authorization: `${this.GET_TOKEN()}`,
+        },
+      });
+
+      return response.data.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw error;
+      }
+      throw error;
+    }
+  }
+
+  async EDIT_ORDER(data: OrderEdit) {
+    try {
+      const response = await apiClient.put('/orders', data, {
+        headers: {
+          Authorization: `${this.GET_TOKEN()}`,
+        },
+      });
+      return response.data.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw error;
+      }
+      throw error;
+    }
+  }
+
+  async ADD_HISTORY(data: HistoryForm) {
+    try {
+      const response = await apiClient.post('/orders/history', data, {
+        headers: {
+          Authorization: `${this.GET_TOKEN()}`,
+        },
+      });
+
+      return response.data.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw error;
+      }
+      throw error;
+    }
+  }
+
+  async GET_HISTORIES(id: string): Promise<HistoryType[]> {
+    try {
+      const response = await apiClient.get(`/orders/${id}/history`, {
+        headers: {
+          Authorization: `${this.GET_TOKEN()}`,
+        },
+      });
+      return response.data.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         throw error;

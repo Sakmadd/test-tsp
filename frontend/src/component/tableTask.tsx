@@ -10,14 +10,25 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { FaEdit } from 'react-icons/fa';
-import { OrderType } from '../types/orderType';
 import { Container } from './container';
+import { useEffect, useState } from 'react';
+import { OrderType } from '../types/orderType';
+import api from '../network/api';
+import { formatDateFromString } from '../utils/formatDate';
+import { useNavigate } from 'react-router-dom';
 
-interface Props {
-  orders: OrderType[];
-}
+export function TableTask() {
+  const navigate = useNavigate();
+  const [orders, setOrders] = useState<OrderType[]>();
 
-export function TableTask({ orders }: Props) {
+  useEffect(() => {
+    async function init() {
+      const orders = await api.GET_TASKS();
+      setOrders(orders);
+    }
+    init();
+  });
+
   return (
     <>
       <Container>
@@ -34,19 +45,25 @@ export function TableTask({ orders }: Props) {
               </Tr>
             </Thead>
             <Tbody>
-              {orders.map((order) => (
-                <Tr key={order.id}>
-                  <Td>{order.product_name}</Td>
-                  <Td>{order.quantity}</Td>
-                  <Td>{order.deadline.toDateString()}</Td>
-                  <Td>{order.history![0].status}</Td>
-                  <Td>
-                    <Button variant={'ghost'} m={0}>
-                      <FaEdit />
-                    </Button>
-                  </Td>
-                </Tr>
-              ))}
+              {orders
+                ? orders.map((order) => (
+                    <Tr key={order.id}>
+                      <Td>{order.product_name}</Td>
+                      <Td>{order.quantity}</Td>
+                      <Td>{formatDateFromString(order.deadline)}</Td>
+                      <Td>{order.history![0].status}</Td>
+                      <Td>
+                        <Button
+                          variant={'ghost'}
+                          m={0}
+                          onClick={() => navigate('/order/history/' + order.id)}
+                        >
+                          <FaEdit />
+                        </Button>
+                      </Td>
+                    </Tr>
+                  ))
+                : null}
             </Tbody>
           </Table>
         </TableContainer>

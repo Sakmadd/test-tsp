@@ -8,7 +8,9 @@ interface Props {
 export function Container({ children }: Props) {
   return (
     <>
-      <Box backgroundColor={'white'}>{children}</Box>
+      <Box backgroundColor={'white'} borderRadius={'md'} p={'2rem'}>
+        {children}
+      </Box>
     </>
   );
 }
