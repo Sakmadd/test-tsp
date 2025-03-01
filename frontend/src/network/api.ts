@@ -207,6 +207,25 @@ class API {
       throw error;
     }
   }
+
+  async CHANGE_QUANTITY(orderId: string, quantity: number): Promise<void> {
+    try {
+      await apiClient.put(
+        `/orders/quantity`,
+        { orderId, quantity },
+        {
+          headers: {
+            Authorization: `${this.GET_TOKEN()}`,
+          },
+        }
+      );
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        throw error;
+      }
+      throw error;
+    }
+  }
 }
 
 export default new API();

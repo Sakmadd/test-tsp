@@ -5,6 +5,8 @@ import {
   FormControl,
   FormLabel,
   Heading,
+  NumberInput,
+  NumberInputField,
   Radio,
   RadioGroup,
   Stack,
@@ -17,12 +19,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import api from '../network/api';
 import { RootState } from '../redux/store';
 import { HistoryForm, Status } from '../types/formType';
+import { useState } from 'react';
 
 export function CreateHistoryPage() {
   const loggedUser = useSelector((state: RootState) => state.loggedUser.value);
   const { id } = useParams();
   const toast = useToast();
   const navigate = useNavigate();
+  const [quantiy, setQuantity] = useState<number>();
   const { register, handleSubmit, setValue, watch } = useForm<HistoryForm>({
     defaultValues: {
       orderId: id || '',
@@ -32,6 +36,11 @@ export function CreateHistoryPage() {
   });
 
   const onSubmit = (data: HistoryForm) => {
+    if (quantiy) {
+      console.log(quantiy);
+      api.CHANGE_QUANTITY(id!, quantiy);
+    }
+
     api.ADD_HISTORY(data).then(() => {
       navigate('/order/edit/' + id);
     });
@@ -83,6 +92,15 @@ export function CreateHistoryPage() {
               </Stack>
             </RadioGroup>
           </Flex>
+
+          <FormControl>
+            <FormLabel>Change Quantity</FormLabel>
+            <NumberInput min={1}>
+              <NumberInputField
+                onChange={(e) => setQuantity(+e.target.value)}
+              />
+            </NumberInput>
+          </FormControl>
 
           <FormControl isRequired>
             <FormLabel>Description</FormLabel>

@@ -179,6 +179,28 @@ class OrdersController {
       );
     }
   }
+
+  async changeQuantity(req: Request, res: Response) {
+    try {
+      const { orderId, quantity } = req.body;
+      await ordersService.changeQuantity(orderId, quantity);
+      res.status(200).json(
+        new ResponseDTO<null>({
+          data: null,
+          message: 'Quantity changed successfully',
+          error: false,
+        })
+      );
+    } catch (error: any) {
+      res.status(error.code).json(
+        new ResponseDTO<null>({
+          data: null,
+          message: errorParser(error),
+          error: true,
+        })
+      );
+    }
+  }
 }
 
 export default new OrdersController();

@@ -6,6 +6,7 @@ const router = Router();
 
 router.post('/', authenticate, ordersController.create);
 router.put('/', authenticate, ordersController.update);
+router.put('/quantity', authenticate, ordersController.changeQuantity);
 router.get('/', authenticate, ordersController.getTaskPM);
 router.get('/task', authenticate, ordersController.getTaskOP);
 router.post('/history', authenticate, ordersController.createHistory);

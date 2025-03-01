@@ -205,6 +205,27 @@ class OrdersService {
     });
     return history;
   }
+
+  async changeQuantity(id: string, quantity: number): Promise<void> {
+    const isOrderExist = await prisma.order.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!isOrderExist) {
+      throw new BadRequestException('Order not found');
+    }
+
+    await prisma.order.update({
+      where: {
+        id,
+      },
+      data: {
+        quantity,
+      },
+    });
+  }
 }
 
 export default new OrdersService();
