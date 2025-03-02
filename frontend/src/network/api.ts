@@ -64,8 +64,6 @@ class API {
         throw new Error(response.data.message);
       }
 
-      console.log(response.data.data);
-
       const token: string = response.data.data.token;
       this.SET_TOKEN(token);
 

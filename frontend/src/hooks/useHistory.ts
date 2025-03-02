@@ -23,7 +23,6 @@ export function useHistory() {
 
   const onSubmit = (data: HistoryForm) => {
     if (quantiy) {
-      console.log(quantiy);
       api.CHANGE_QUANTITY(id!, quantiy);
     }
 
