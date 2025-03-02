@@ -25,7 +25,6 @@ import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import api from '../network/api';
 
-// Schema validation with Zod
 const registerSchema = z.object({
   username: z.string().min(3, 'Username must be at least 3 characters'),
   email: z.string().email('Invalid email address'),

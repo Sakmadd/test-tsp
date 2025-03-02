@@ -40,8 +40,6 @@ class API {
     }
   }
   async REGISTER(data: RegisterDataType): Promise<AxiosResponse> {
-    console.log(data);
-
     try {
       return await apiClient.post(`/auth/register`, {
         username: data.username,
