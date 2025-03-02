@@ -55,7 +55,7 @@ export default function RegisterPage() {
     api
       .REGISTER(req)
       .then(() => {
-        navigate('/');
+        navigate('/login');
       })
       .catch((error) => {
         console.error(error);
@@ -84,21 +84,18 @@ export default function RegisterPage() {
         >
           <form onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={4}>
-              {/* Username Field */}
               <FormControl id="username" isInvalid={!!errors.username}>
                 <FormLabel>Username</FormLabel>
                 <Input type="text" {...register('username')} />
                 <FormErrorMessage>{errors.username?.message}</FormErrorMessage>
               </FormControl>
 
-              {/* Email Field */}
               <FormControl id="email" isInvalid={!!errors.email}>
                 <FormLabel>Email address</FormLabel>
                 <Input type="email" {...register('email')} />
                 <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
               </FormControl>
 
-              {/* Password Field */}
               <FormControl id="password" isInvalid={!!errors.password}>
                 <FormLabel>Password</FormLabel>
                 <InputGroup>
