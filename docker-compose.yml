@@ -6,11 +6,10 @@ services:
       - '3000:3000'
     volumes:
       - ./backend:/app
-      - /app/node_modules
     environment:
       - NODE_ENV=development
       - PORT=3000
-      - DATABASE_URL=postgresql://postgres:1234@database:5432/tsp?schema=public # Ubah 'localhost' jadi 'database'
+      - DATABASE_URL=postgresql://postgres:1234@database:5432/tsp?schema=public
       - SECRET_SAUCE=hastalavista
     depends_on:
       - database
@@ -21,7 +20,6 @@ services:
       - '3001:3001'
     volumes:
       - ./frontend:/app
-      - /app/node_modules
     depends_on:
       - backend
     environment:
