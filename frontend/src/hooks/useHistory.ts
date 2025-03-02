@@ -28,10 +28,7 @@ export function useHistory() {
     }
 
     api.ADD_HISTORY(data).then(() => {
-      if (loggedUser!.role == 'OP') {
-        navigate('/task' + id);
-      }
-      navigate('/order/edit/' + id);
+      navigate('/');
     });
 
     toast({
