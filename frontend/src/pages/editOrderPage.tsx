@@ -15,6 +15,7 @@ import {
 
 import { FaEdit } from 'react-icons/fa';
 import { useEditOrder } from '../hooks/useEditOrder';
+import { statusColorMap } from '../utils/statusColor';
 
 export function EditOrderPage() {
   const { handleSubmit, onSubmit, operators, order, register, navigate } =
@@ -76,8 +77,12 @@ export function EditOrderPage() {
           <FormControl isRequired>
             <FormLabel>Status</FormLabel>
             <Flex alignItems={'center'}>
-              <Tag size={'md'} variant="solid" colorScheme="teal">
-                {order.history ? order.history[0].status : 'Unknown'}
+              <Tag
+                size="md"
+                variant="solid"
+                colorScheme={statusColorMap[order.history![0].status] || 'gray'}
+              >
+                {order.history?.[0]?.status}
               </Tag>
               <Button
                 variant={'ghost'}

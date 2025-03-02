@@ -1,21 +1,22 @@
 import {
   Button,
   Table,
-  TableCaption,
   TableContainer,
+  Tag,
   Tbody,
   Td,
   Th,
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import { FaEdit } from 'react-icons/fa';
-import { Container } from './container';
 import { useEffect, useState } from 'react';
-import { OrderType } from '../types/orderType';
-import api from '../network/api';
-import { formatDateFromString } from '../utils/formatDate';
+import { FaEdit } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import api from '../network/api';
+import { OrderType } from '../types/orderType';
+import { formatDateFromString } from '../utils/formatDate';
+import { statusColorMap } from '../utils/statusColor';
+import { Container } from './container';
 
 export function TableTask() {
   const navigate = useNavigate();
@@ -34,7 +35,6 @@ export function TableTask() {
       <Container>
         <TableContainer>
           <Table variant="simple">
-            <TableCaption>Imperial to metric conversion factors</TableCaption>
             <Thead>
               <Tr>
                 <Th>Product</Th>
@@ -51,7 +51,17 @@ export function TableTask() {
                       <Td>{order.product_name}</Td>
                       <Td>{order.quantity}</Td>
                       <Td>{formatDateFromString(order.deadline)}</Td>
-                      <Td>{order.history![0].status}</Td>
+                      <Td>
+                        <Tag
+                          size="md"
+                          variant="solid"
+                          colorScheme={
+                            statusColorMap[order.history![0].status] || 'gray'
+                          }
+                        >
+                          {order.history?.[0]?.status}
+                        </Tag>
+                      </Td>
                       <Td>
                         <Button
                           variant={'ghost'}

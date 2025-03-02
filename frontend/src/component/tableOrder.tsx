@@ -2,101 +2,106 @@ import {
   Button,
   Divider,
   Flex,
+  FormLabel,
+  Grid,
+  GridItem,
+  Heading,
   Input,
   Select,
   Table,
-  TableCaption,
   TableContainer,
+  Tag,
   Tbody,
   Td,
   Th,
   Thead,
   Tr,
 } from '@chakra-ui/react';
-import { Container } from '../component/container';
-import { OrderType } from '../types/orderType';
 import { FaEdit } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import api from '../network/api';
+import { Container } from '../component/container';
+import { useTableOrder } from '../hooks/useTableOrder';
 import { formatDateFromString } from '../utils/formatDate';
+import { statusColorMap } from '../utils/statusColor';
 
 export function TableOrder() {
-  const [orders, setOrders] = useState<OrderType[]>([]);
-  const [filteredOrders, setFilteredOrders] = useState<OrderType[]>([]);
-  const [selectedDate, setSelectedDate] = useState('');
-  const [selectedStatus, setSelectedStatus] = useState('');
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    async function init() {
-      const fetchedOrders = await api.GET_ORDERS();
-      setOrders(fetchedOrders);
-      setFilteredOrders(fetchedOrders);
-    }
-    init();
-  }, []);
-
-  useEffect(() => {
-    let filtered = orders;
-    if (selectedDate) {
-      filtered = filtered.filter((order) =>
-        order.deadline.startsWith(selectedDate)
-      );
-    }
-    if (selectedStatus) {
-      filtered = filtered.filter(
-        (order) => order.history![0].status === selectedStatus.toUpperCase()
-      );
-    }
-    setFilteredOrders(filtered);
-  }, [selectedDate, selectedStatus, orders]);
+  const {
+    filteredOrders,
+    navigate,
+    startDate,
+    endDate,
+    selectedStatus,
+    setStartDate,
+    setEndDate,
+    setSelectedStatus,
+  } = useTableOrder();
 
   return (
     <>
       <Flex flexDir={'column'} gap={'2rem'}>
         <Container>
-          <Flex justifyContent={'center'} w={'full'} px={'20px'}>
-            <Flex alignItems={'center'} gap={'20px'} w={'200px'}>
+          <Heading size="md" mb={4} textAlign="center">
+            Filter Orders
+          </Heading>
+
+          <Grid templateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} gap={4}>
+            <GridItem>
+              <FormLabel>Start From Date</FormLabel>
               <Input
-                placeholder="Select Date"
+                placeholder="Start Date"
                 size="md"
                 type="date"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                borderColor="gray.300"
+                focusBorderColor="teal.500"
               />
-            </Flex>
+            </GridItem>
 
-            <Flex alignItems={'center'} gap={'20px'} w={'250px'}>
+            <GridItem>
+              <FormLabel>Until Date</FormLabel>
+              <Input
+                placeholder="End Date"
+                size="md"
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                borderColor="gray.300"
+                focusBorderColor="teal.500"
+              />
+            </GridItem>
+
+            <GridItem>
+              <FormLabel>Status</FormLabel>
               <Select
-                placeholder="By Status"
+                placeholder="All"
                 value={selectedStatus}
                 onChange={(e) => setSelectedStatus(e.target.value)}
+                borderColor="gray.300"
+                focusBorderColor="teal.500"
               >
                 <option value="pending">PENDING</option>
                 <option value="progress">PROGRESS</option>
                 <option value="completed">COMPLETED</option>
                 <option value="canceled">CANCELED</option>
               </Select>
-            </Flex>
+            </GridItem>
+          </Grid>
 
-            <Divider opacity={0}></Divider>
+          <Divider my={4} />
 
+          <Flex justify="center">
             <Button
-              p={'25px'}
               colorScheme="teal"
-              variant="solid"
+              size="lg"
               onClick={() => navigate('/order/create')}
             >
               Add Order
             </Button>
           </Flex>
         </Container>
-
         <Container>
           <TableContainer>
             <Table variant="simple">
-              <TableCaption>Order List</TableCaption>
               <Thead>
                 <Tr>
                   <Th>Product</Th>
@@ -115,7 +120,17 @@ export function TableOrder() {
                       <Td>{order.quantity}</Td>
                       <Td>{formatDateFromString(order.deadline)}</Td>
                       <Td>{order.operator.username}</Td>
-                      <Td>{order.history![0].status}</Td>
+                      <Td>
+                        <Tag
+                          size="md"
+                          variant="solid"
+                          colorScheme={
+                            statusColorMap[order.history![0].status] || 'gray'
+                          }
+                        >
+                          {order.history?.[0]?.status}
+                        </Tag>
+                      </Td>
                       <Td>
                         <Button
                           variant={'ghost'}

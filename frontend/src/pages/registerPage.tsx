@@ -17,50 +17,22 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
-import { z } from 'zod';
-import api from '../network/api';
-
-const registerSchema = z.object({
-  username: z.string().min(3, 'Username must be at least 3 characters'),
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-});
-
-type RegisterFormInputs = z.infer<typeof registerSchema>;
+import { useRegister } from '../hooks/useRegister';
 
 export default function RegisterPage() {
-  const [value, setValue] = useState('OP');
-  const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
-
   const {
-    register,
+    errors,
     handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<RegisterFormInputs>({
-    resolver: zodResolver(registerSchema),
-    mode: 'onChange',
-  });
-
-  const onSubmit = (data: RegisterFormInputs) => {
-    const req = {
-      ...data,
-      role: value,
-    };
-    api
-      .REGISTER(req)
-      .then(() => {
-        navigate('/login');
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+    isValid,
+    onSubmit,
+    register,
+    setShowPassword,
+    setValue,
+    showPassword,
+    value,
+    navigate,
+  } = useRegister();
 
   return (
     <Flex
@@ -115,7 +87,6 @@ export default function RegisterPage() {
                 <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
               </FormControl>
 
-              {/* Radio Group */}
               <RadioGroup onChange={setValue} value={value}>
                 <FormLabel textAlign={'center'}>Role</FormLabel>
                 <Stack direction="row" justify={'center'}>
@@ -124,7 +95,6 @@ export default function RegisterPage() {
                 </Stack>
               </RadioGroup>
 
-              {/* Submit Button */}
               <Stack spacing={10} pt={2}>
                 <Button
                   type="submit"
@@ -133,13 +103,12 @@ export default function RegisterPage() {
                   bg={'blue.400'}
                   color={'white'}
                   _hover={{ bg: 'blue.500' }}
-                  isDisabled={!isValid} // Disabled if form is invalid
+                  isDisabled={!isValid}
                 >
                   Sign up
                 </Button>
               </Stack>
 
-              {/* Login Link */}
               <Stack pt={6}>
                 <Text align={'center'}>
                   Already a user?{' '}
