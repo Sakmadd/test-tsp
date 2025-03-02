@@ -2,32 +2,30 @@ version: '3.8'
 services:
   backend:
     build: ./backend
-    ports:
-      - '3000:3000'
-    volumes:
-      - ./backend:/app
-    environment:
-      - NODE_ENV=development
-      - PORT=3000
-      - DATABASE_URL=postgresql://postgres:1234@database:5432/tsp?schema=public
-      - SECRET_SAUCE=hastalavista
+    container_name: backend
+    restart: always
     depends_on:
       - database
+    environment:
+      DATABASE_URL: 'postgresql://postgres:1234@database:5432/tsp?schema=public'
+      PORT: 3000
+      SECRET_SAUCE: 'hastalavista'
+    ports:
+      - '3000:3000'
 
   frontend:
     build: ./frontend
+    container_name: frontend
     ports:
-      - '3001:3001'
-    volumes:
-      - ./frontend:/app
-    depends_on:
-      - backend
+      - '4173:4173'
+    restart: always
     environment:
       - VITE_API_URL=http://backend:3000
-    command: npm run dev -- --host 0.0.0.0
 
   database:
     image: postgres:15
+    container_name: database
+    restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
@@ -35,7 +33,7 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
 
 volumes:
-  db-data:
+  pg_data:
