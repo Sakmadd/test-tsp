@@ -28,7 +28,7 @@ export function useHistory() {
     }
 
     api.ADD_HISTORY(data).then(() => {
-      navigate('/order/edit/' + id);
+      navigate(-1);
     });
 
     toast({
