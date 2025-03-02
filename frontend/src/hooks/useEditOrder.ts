@@ -4,9 +4,9 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import api from '../network/api';
-import { OrderEdit } from '../types/OrderEditType';
 import { OrderType } from '../types/orderType';
 import { UserType } from '../types/userType';
+import { OrderEditForm } from '../types/orderEditType';
 
 export function useEditOrder() {
   const { id } = useParams();
@@ -15,7 +15,7 @@ export function useEditOrder() {
   const [order, setOrder] = useState<OrderType | null>(null);
   const [operators, setOperators] = useState<UserType[]>([]);
 
-  const { register, handleSubmit, setValue } = useForm<OrderEdit>();
+  const { register, handleSubmit, setValue } = useForm<OrderEditForm>();
 
   useEffect(() => {
     async function init() {
@@ -33,7 +33,7 @@ export function useEditOrder() {
     init();
   }, [id, setValue]);
 
-  const onSubmit = async (formValues: OrderEdit) => {
+  const onSubmit = async (formValues: OrderEditForm) => {
     try {
       await api.EDIT_ORDER(formValues);
       toast({

@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  backend:
+    build: ./backend
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DATABASE_URL=postgresql://postgres:1234@database:5432/tsp?schema=public # Ubah 'localhost' jadi 'database'
+      - SECRET_SAUCE=hastalavista
+    depends_on:
+      - database
+
+  frontend:
+    build: ./frontend
+    ports:
+      - '3001:3001'
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_URL=http://backend:3000
+    command: npm run dev -- --host 0.0.0.0
+
+  database:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: tsp
+    ports:
+      - '5432:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:

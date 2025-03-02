@@ -1,4 +1,4 @@
-export type OrderEdit = {
+export type OrderEditForm = {
   id: string;
   productName: string;
   quantity: number;

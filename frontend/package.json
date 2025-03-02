@@ -16,6 +16,7 @@
     "@hookform/resolvers": "^4.1.2",
     "@reduxjs/toolkit": "^2.6.0",
     "axios": "^1.7.7",
+    "dotenv": "^16.4.7",
     "framer-motion": "^12.4.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

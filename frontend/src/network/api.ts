@@ -8,8 +8,8 @@ import {
 import { UserType } from '../types/userType';
 import { OrderType } from '../types/orderType';
 import { OrderCreateType } from '../types/orderCreateType';
-import { OrderEdit } from '../types/OrderEditType';
 import { HistoryType } from '../types/historyType';
+import { OrderEditForm } from '../types/orderEditType';
 
 const apiClient: AxiosInstance = axios.create({
   baseURL: CONFIG.API_URL,
@@ -155,7 +155,7 @@ class API {
       throw error;
     }
   }
-  async EDIT_ORDER(data: OrderEdit) {
+  async EDIT_ORDER(data: OrderEditForm) {
     try {
       const response = await apiClient.put('/orders', data, {
         headers: {

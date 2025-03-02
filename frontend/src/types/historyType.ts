@@ -1,4 +1,4 @@
-import { Status } from '@prisma/client';
+import { Status } from './formType';
 
 export type HistoryType = {
   id: string;
