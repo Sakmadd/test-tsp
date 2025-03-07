@@ -1,0 +1,452 @@
+{
+	"info": {
+		"_postman_id": "9f30cf7c-3575-4d2f-bb0d-d055b73f2890",
+		"name": "TSP test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41011575"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "register user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register user 2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"rizal@gmail.com\",\r\n    \"username\": \"rizal\",\r\n    \"password\":\"1234\",\r\n    \"role\":\"OP\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"rizal@gmail.com\",\r\n    \"password\":\"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login Copy",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImZkYjE0YjkwLWRlOGQtNGQzOC05YWY3LTQ5ZjcyMDZmNjdlNiIsImVtYWlsIjoicml6YWxAZ21haWwuY29tIiwidXNlcm5hbWUiOiJyaXphbCIsInJvbGUiOiJPUCIsImlhdCI6MTc0MDc4MzExN30.y5hAM7T3j3foZdKB2D33iUu9zIM69gwlzDN_cNROBZs",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "order",
+			"item": [
+				{
+					"name": "pm",
+					"item": [
+						{
+							"name": "create order",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjkzZjA5ZGQ4LTc2ZmYtNGRjOC04MzUzLWU3MWIxMDI1NzYyZiIsImVtYWlsIjoiYWhtYWRAZ21haWwuY29tIiwidXNlcm5hbWUiOiJhaG1hZCIsInJvbGUiOiJQTSIsImlhdCI6MTc0MDc3MjM3Mn0.HiYMoxoYBryNXFthnSWyIQR3TTBUtCa-BjtlDKViuuw",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"productName\": \"sambungan pipa baja\",\r\n  \"quantity\": 20,\r\n  \"deadline\": \"2025-03-01\",\r\n  \"operatorId\": \"fdb14b90-de8d-4d38-9af7-49f7206f67e6\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/orders",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update order",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjkzZjA5ZGQ4LTc2ZmYtNGRjOC04MzUzLWU3MWIxMDI1NzYyZiIsImVtYWlsIjoiYWhtYWRAZ21haWwuY29tIiwidXNlcm5hbWUiOiJhaG1hZCIsInJvbGUiOiJQTSIsImlhdCI6MTc0MDc3MjM3Mn0.HiYMoxoYBryNXFthnSWyIQR3TTBUtCa-BjtlDKViuuw",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"id\": \"WO-20250228-005\",\r\n  \"productName\": \"sambungan pipa tembaga edit\",\r\n  \"quantity\": 21,\r\n  \"deadline\": \"2025-03-01\",\r\n  \"operatorId\": \"fdb14b90-de8d-4d38-9af7-49f7206f67e6\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/orders",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get order",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjkzZjA5ZGQ4LTc2ZmYtNGRjOC04MzUzLWU3MWIxMDI1NzYyZiIsImVtYWlsIjoiYWhtYWRAZ21haWwuY29tIiwidXNlcm5hbWUiOiJhaG1hZCIsInJvbGUiOiJQTSIsImlhdCI6MTc0MDc4MjU0NX0.M-WhLOGkIN1mV5wOL0JDg4azBkUECu6Dwt-BGPHzJvc",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/orders",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"orders"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get order by id",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjkzZjA5ZGQ4LTc2ZmYtNGRjOC04MzUzLWU3MWIxMDI1NzYyZiIsImVtYWlsIjoiYWhtYWRAZ21haWwuY29tIiwidXNlcm5hbWUiOiJhaG1hZCIsInJvbGUiOiJQTSIsImlhdCI6MTc0MDc4MjU0NX0.M-WhLOGkIN1mV5wOL0JDg4azBkUECu6Dwt-BGPHzJvc",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3000/orders/WO-20250301-001",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"orders",
+										"WO-20250301-001"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get history by order id",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjkzZjA5ZGQ4LTc2ZmYtNGRjOC04MzUzLWU3MWIxMDI1NzYyZiIsImVtYWlsIjoiYWhtYWRAZ21haWwuY29tIiwidXNlcm5hbWUiOiJhaG1hZCIsInJvbGUiOiJQTSIsImlhdCI6MTc0MDc4MjU0NX0.M-WhLOGkIN1mV5wOL0JDg4azBkUECu6Dwt-BGPHzJvc",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/orders/history/WO-20250301-001",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"orders",
+										"history",
+										"WO-20250301-001"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "op",
+					"item": [
+						{
+							"name": "get task",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImM0ZTk0YWQ5LWViYmYtNGQ0Mi05ZmIyLTUyODc2NTU4MGU4MCIsImVtYWlsIjoicml6YWxAZ21haWwuY29tIiwidXNlcm5hbWUiOiJyaXphbCIsInJvbGUiOiJPUCIsImlhdCI6MTc0MDg1NTI2MH0.QNO5ASEgPzoFqPKKVnh9W33smRC1qDzcvvl7ap-AnCM",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/orders/task",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"orders",
+										"task"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create history",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImZkYjE0YjkwLWRlOGQtNGQzOC05YWY3LTQ5ZjcyMDZmNjdlNiIsImVtYWlsIjoicml6YWxAZ21haWwuY29tIiwidXNlcm5hbWUiOiJyaXphbCIsInJvbGUiOiJPUCIsImlhdCI6MTc0MDc4MzExN30.y5hAM7T3j3foZdKB2D33iUu9zIM69gwlzDN_cNROBZs",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"orderId\": \"WO-20250228-001\",\r\n    \"description\":\"order on is complete\",\r\n    \"status\": \"COMPLEadwTED\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/orders/history",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"orders",
+										"history"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "edit quantiy",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImZkYjE0YjkwLWRlOGQtNGQzOC05YWY3LTQ5ZjcyMDZmNjdlNiIsImVtYWlsIjoicml6YWxAZ21haWwuY29tIiwidXNlcm5hbWUiOiJyaXphbCIsInJvbGUiOiJPUCIsImlhdCI6MTc0MDc4MzExN30.y5hAM7T3j3foZdKB2D33iUu9zIM69gwlzDN_cNROBZs",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"orderId\": \"WO-20250301-003\",\r\n    \"quantity\": 5\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/orders/quantity",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"orders",
+										"quantity"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "get operators",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImZkYjE0YjkwLWRlOGQtNGQzOC05YWY3LTQ5ZjcyMDZmNjdlNiIsImVtYWlsIjoicml6YWxAZ21haWwuY29tIiwidXNlcm5hbWUiOiJyaXphbCIsInJvbGUiOiJPUCIsImlhdCI6MTc0MDgxOTY5MX0.HfuFDEIH_IkxcLljGOlzZaBiGYUqQrcdgBZ-Qr_m3e4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/users/operators",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"operators"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
